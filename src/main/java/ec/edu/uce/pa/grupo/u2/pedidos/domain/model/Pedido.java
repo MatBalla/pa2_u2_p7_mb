@@ -5,6 +5,10 @@ public class Pedido {
     private String producto;
     private Double precio;
 
+    public Pedido(){
+        
+    }
+
     public Integer getId() {
         return id;
     }
