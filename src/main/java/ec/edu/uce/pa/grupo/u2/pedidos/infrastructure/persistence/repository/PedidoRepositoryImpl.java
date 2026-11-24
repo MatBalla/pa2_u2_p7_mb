@@ -1,10 +1,14 @@
 package ec.edu.uce.pa.grupo.u2.pedidos.infrastructure.persistence.repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import ec.edu.uce.pa.grupo.u2.pedidos.domain.model.Pedido;
 import ec.edu.uce.pa.grupo.u2.pedidos.domain.repository.PedidoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 //Se prgorama el CRUD, a travez de una interfaz
 @ApplicationScoped 
@@ -21,10 +25,10 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     }
 
     //Read por id
-    public Pedido read(Integer id) {
+    public Optional<Pedido> read(Integer id) {
         // Implementación de la lógica para leer un pedido por su ID desde la base de datos
-        
-        return this.entityManager.find(Pedido.class, id); // find = buscar un registro en la base de datos por su ID
+        Pedido pedido = this.entityManager.find(Pedido.class, id); 
+        return  Optional.ofNullable(pedido);// find = buscar un registro en la base de datos por su ID
     }
 
     //Update
@@ -39,9 +43,23 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     public void delete(Integer id) {
         // Implementación de la lógica para eliminar un pedido por su ID desde la base de datos
         
-        Pedido pedido = this.read(id); //se llama al metodom read para obtener el pedido a eliminar
-        this.entityManager.remove(pedido); // remove = eliminar un registro en la base de datos por su ID
+        Optional<Pedido> pedido = this.read(id); //se llama al metodom read para obtener el pedido a eliminar
+        pedido.ifPresent(this.entityManager::remove);// remove = eliminar un registro en la base de datos por su ID
 
+    }
+
+     @Override
+    public Optional<Pedido> readByNumber(String numero) {
+        //Consulta jpql
+        TypedQuery<Pedido> query = this.entityManager.createQuery("SELECT p FROM Pedido p WHERE p.numero = :numeroVariable", Pedido.class);
+        query.setParameter("numeroVariable", numero);
+        return Optional.ofNullable(query.getSingleResult());
+
+    }
+
+    @Override
+    public List<Pedido> readAll() {
+        return null;
     }
 
 }

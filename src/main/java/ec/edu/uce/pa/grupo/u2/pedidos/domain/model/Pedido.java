@@ -31,6 +31,8 @@ public class Pedido {
     @Column (name = "pedd_fecha")
     private LocalDateTime fecha;
 
+    @Column (name = "pedd_numero")
+    private String numero;
 
     public Pedido(){
         
@@ -67,9 +69,20 @@ public class Pedido {
         this.precio = precio;
     }
 
+     public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
     @Override
     public String toString() {
-        return "Pedido [id=" + id + ", producto=" + producto + ", precio=" + precio + ", fecha=" + fecha + "]";
+        return "Pedido [id=" + id + ", producto=" + producto + ", precio=" + precio + ", fecha=" + fecha + ", numero="
+                + numero + "]";
     }
+
+    
 
 }
