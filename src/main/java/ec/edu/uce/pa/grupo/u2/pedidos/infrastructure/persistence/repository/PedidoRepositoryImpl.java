@@ -8,6 +8,7 @@ import ec.edu.uce.pa.grupo.u2.pedidos.domain.repository.PedidoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 
 //Se prgorama el CRUD, a travez de una interfaz
@@ -51,15 +52,38 @@ public class PedidoRepositoryImpl implements PedidoRepository {
      @Override
     public Optional<Pedido> readByNumber(String numero) {
         //Consulta jpql
+        //createQuery(Consulta, Objeto)
         TypedQuery<Pedido> query = this.entityManager.createQuery("SELECT p FROM Pedido p WHERE p.numero = :numeroVariable", Pedido.class);
+        //setParameter(nombre_variable, valorVariable);
+        //permite reeemplazar en mi jpql una variable que he declarado por una variable que he declarado en el método
         query.setParameter("numeroVariable", numero);
+        //return query.getSingleResult();
+        //return query.getResultList().stream().findFirst();
         return Optional.ofNullable(query.getSingleResult());
-
     }
 
     @Override
     public List<Pedido> readAll() {
-        return null;
+        TypedQuery<Pedido> query = this.entityManager.createQuery("SELECT p FROM Pedido p", Pedido.class);
+
+        //devuelve todo
+        return query.getResultList();
+    }
+
+    @Override
+    public Optional<Pedido> readNativeNumber(String numero) {
+        //Query se usa porque no se sabe con que se va a trabajkar
+        Query mQuery = this.entityManager.createNativeQuery("SELECT * FROM Pedidos p WHERE p.pedd_numero = :numeroVariable", Pedido.class);
+        mQuery.setParameter("numeroVariable", numero);
+        return Optional.ofNullable((Pedido)mQuery.getSingleResult());
+    }
+
+    @Override
+    public List<Pedido> readNativeAll() {
+        Query Mquery = this.entityManager.createNativeQuery("SELECT * FROM Pedidos", Pedido.class);
+
+        //devuelve todo
+        return Mquery.getResultList();
     }
 
 }

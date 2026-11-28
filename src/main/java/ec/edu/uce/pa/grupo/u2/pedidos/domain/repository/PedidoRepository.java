@@ -25,4 +25,12 @@ public interface PedidoRepository {
     //Delete
     public void delete(Integer id);
 
+    //Native
+    public Optional<Pedido> readNativeNumber(String numero);
+
+    public List<Pedido> readNativeAll();
+
+    
+
+
 }

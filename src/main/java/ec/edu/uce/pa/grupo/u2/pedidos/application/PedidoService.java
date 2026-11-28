@@ -1,6 +1,7 @@
 package ec.edu.uce.pa.grupo.u2.pedidos.application;
 //Se crea una clase por cada entidad
 
+import java.util.List;
 import java.util.Optional;
 
 import ec.edu.uce.pa.grupo.u2.pedidos.domain.model.Pedido;
@@ -34,6 +35,18 @@ public class PedidoService {
 
     public void eliminar(Integer id){
         this.pedidoRepository.delete(id);
+    }
+
+    public List<Pedido> todo(){
+        return this.pedidoRepository.readAll();
+    }
+
+    public Optional<Pedido> readNativeNumber(String numero){
+        return this.pedidoRepository.readNativeNumber(numero);
+    }
+
+    public List<Pedido> readNativeAll() {
+        return this.pedidoRepository.readNativeAll();
     }
 
 }
